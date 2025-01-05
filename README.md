@@ -8,7 +8,7 @@
     </a>
 </p>
 
-# runescape-667
+# 2011Scape Client
 
 Client build [667][build] of [RuneScape 2][rs2], originally released on [2011-10-04][update], modified for 2011Scape.
 
