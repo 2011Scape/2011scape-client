@@ -1,6 +1,5 @@
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
-import com.jagex.ClientConfig;
 import com.jagex.Parameters;
 import com.jagex.awt.CloseWindowListener;
 import com.jagex.crypto.rsa.RsaPublicKeyReader;
@@ -14,6 +13,7 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -43,7 +43,7 @@ public final class Application implements AppletStub {
             } else {
                 var documentBase = new URL(parsed.getDocumentBase());
                 var parameters = Parameters.createDefault();
-                var application = new Application(documentBase, parameters);
+                var application = new Application(documentBase, parsed.getJs5PublicKeyPath(), parsed.getLoginPublicKeyPath(), parameters);
                 application.start();
             }
         } catch (ParameterException ex) {
@@ -60,10 +60,16 @@ public final class Application implements AppletStub {
 
     private final URL documentBase;
 
+    private final Path js5PublicKey;
+
+    private final Path loginPublicKey;
+
     private final Map<String, String> parameters;
 
-    public Application(URL documentBase, Map<String, String> parameters) {
+    public Application(URL documentBase, Path js5PublicKey, Path loginPublicKey, Map<String, String> parameters) {
         this.documentBase = documentBase;
+        this.js5PublicKey = js5PublicKey;
+        this.loginPublicKey = loginPublicKey;
         this.parameters = parameters;
     }
 
@@ -107,13 +113,21 @@ public final class Application implements AppletStub {
     }
 
     private void setJs5PublicKey() throws IOException {
-        Static442.JS5_RSA_EXPONENT = ClientConfig.RSA_EXPONENT;
-        Static670.JS5_RSA_MODULUS = ClientConfig.JS5_MODULUS;
+        var js5Msg = formatAbsolute(JS5_KEY_READING, js5PublicKey);
+        System.out.println(js5Msg);
+
+        var key = RsaPublicKeyReader.read(js5PublicKey);
+        Static442.JS5_RSA_EXPONENT = key.getExponent();
+        Static670.JS5_RSA_MODULUS = key.getModulus();
     }
 
     private void setLoginPublicKey() throws IOException {
-        ClientConfig.RSA_EXPONENT = ClientConfig.RSA_EXPONENT;
-        ClientConfig.LOGIN_MODULUS = ClientConfig.LOGIN_MODULUS;
+        var js5Msg = formatAbsolute(LOGIN_KEY_READING, loginPublicKey);
+        System.out.println(js5Msg);
+
+        var key = RsaPublicKeyReader.read(loginPublicKey);
+        LoginManager.RSA_EXPONENT = key.getExponent();
+        LoginManager.RSA_MODULUS = key.getModulus();
     }
 
     private void tryLoadJawt() {

@@ -1,4 +1,7 @@
-import com.jagex.*;
+import com.jagex.Client;
+import com.jagex.LoginProt;
+import com.jagex.ServerProt;
+import com.jagex.StockmarketOffer;
 import com.jagex.core.constants.LoginResponseCode;
 import com.jagex.core.constants.LoginStep;
 import com.jagex.core.constants.MainLogicStep;
@@ -92,7 +95,7 @@ public final class LoginManager {
     public static boolean socialNetworkLogin = false;
 
     @OriginalMember(owner = "client!lp", name = "b", descriptor = "Ljava/math/BigInteger;")
-    public static BigInteger RSA_MODULUS = ClientConfig.LOGIN_MODULUS;
+    public static BigInteger RSA_MODULUS = new BigInteger("a76cba054be8a8cb683bf47c5e5b4950b60647f74da5ea7d87f0ba7d24bb6580dec4809afa07e26db0d0c88ca41bdb697fc6ae0def8afc0bacd841bb57fb8851", 16);
 
     @OriginalMember(owner = "client!ica", name = "j", descriptor = "Ljava/math/BigInteger;")
     public static BigInteger RSA_EXPONENT = new BigInteger("10001", 16);
@@ -308,7 +311,7 @@ public final class LoginManager {
                     packet.p8(clientSessionKey);
                     packet.p1(Client.modeGame.id);
                     packet.p1((int) (Math.random() * 9.9999999E7D));
-                    packet.rsaenc(ClientConfig.LOGIN_MODULUS, ClientConfig.RSA_EXPONENT);
+                    packet.rsaenc(RSA_MODULUS, RSA_EXPONENT);
                     message.bitPacket.pdata(packet.pos, packet.data, 0);
                     message.bitPacket.psize2(message.bitPacket.pos - pos);
                 } else {
@@ -884,12 +887,6 @@ public final class LoginManager {
 
     @OriginalMember(owner = "client!kp", name = "a", descriptor = "(IZ)V")
     public static void setLoginResponse(@OriginalArg(0) int response) {
-        if (ClientConfig.DISABLE_LOBBY){
-            lobbyLoginResponse = response;
-            ConnectionInfo.game.defaultPort = 50015;
-            ConnectionInfo.game.alternatePort = 50015;
-            ConnectionInfo.game.world = 15;
-        }
         if (type == TYPE_LOBBY) {
             lobbyLoginResponse = response;
         } else if (type == TYPE_GAME) {
@@ -1117,15 +1114,9 @@ public final class LoginManager {
     @OriginalMember(owner = "client!tia", name = "a", descriptor = "(Ljava/lang/String;Ljava/lang/String;B)V")
     public static void doLobbyLogin(@OriginalArg(0) String password, @OriginalArg(1) String username) {
         anInt7113 = -1;
-        if (ClientConfig.DISABLE_LOBBY){
-            ServerConnection.active = ServerConnection.GAME;
-            type = TYPE_GAME;
-        } else {
-            ServerConnection.active = ServerConnection.LOBBY;
-            type = TYPE_LOBBY;
-        }
+        ServerConnection.active = ServerConnection.LOBBY;
+        type = TYPE_LOBBY;
         doLogin(false, username, false, password);
-
     }
 
     @OriginalMember(owner = "client!tk", name = "a", descriptor = "(II)V")

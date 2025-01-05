@@ -1,7 +1,6 @@
 package com.jagex.game.runetek6.client;
 
 import com.jagex.Canvas_Sub1;
-import com.jagex.ClientConfig;
 import com.jagex.core.util.TickScheduler;
 import rs2.client.loading.library.LibraryManager;
 import com.jagex.sign.SignLink;
@@ -752,9 +751,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
     protected final boolean checkhost() {
         @Pc(16) String host = this.getDocumentBase().getHost().toLowerCase();
 
-        if (ClientConfig.SKIP_HOST_CHECK){
-            return true;
-        } else if (host.equals("jagex.com") || host.endsWith(".jagex.com")) {
+        if (host.equals("jagex.com") || host.endsWith(".jagex.com")) {
             return true;
         } else if (host.equals("runescape.com") || host.endsWith(".runescape.com")) {
             return true;
