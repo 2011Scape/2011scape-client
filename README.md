@@ -14,18 +14,7 @@ Client build [667][build] of [RuneScape 2][rs2], originally released on [2011-10
 
 ## Getting Started
 
-Run the client either directly via Gradle:
-
-```bash
-./gradlew client:run --args="--js5 '/path/to/js5.public.key' --login '/path/to/login.public.key'"
-```
-
-Or via the built distributable:
-
-```bash
-./gradlew installDist
-./client/build/install/client/bin/client --js5 "/path/to/js5.public.key" --login "/path/to/login.public.key"
-```
+Run the client using Application.java:
 
 ## Naming
 
