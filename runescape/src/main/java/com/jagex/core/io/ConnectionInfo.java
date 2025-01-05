@@ -31,10 +31,10 @@ public final class ConnectionInfo {
     public String address;
 
     @OriginalMember(owner = "client!lja", name = "m", descriptor = "I")
-    public int defaultPort = 43594;
+    public int defaultPort = 50015;
 
     @OriginalMember(owner = "client!lja", name = "k", descriptor = "I")
-    public int alternatePort = 443;
+    public int alternatePort = 50015;
 
     @OriginalMember(owner = "client!lja", name = "d", descriptor = "Z")
     public boolean proxy = false;

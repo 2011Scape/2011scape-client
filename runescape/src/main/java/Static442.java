@@ -1,3 +1,4 @@
+import com.jagex.ClientConfig;
 import org.openrs2.deob.annotation.OriginalMember;
 
 import java.math.BigInteger;
@@ -5,7 +6,7 @@ import java.math.BigInteger;
 public final class Static442 {
 
     @OriginalMember(owner = "client!nv", name = "p", descriptor = "Ljava/math/BigInteger;")
-    public static BigInteger JS5_RSA_EXPONENT = new BigInteger("10001", 16);
+    public static BigInteger JS5_RSA_EXPONENT = ClientConfig.RSA_EXPONENT;
 
     @OriginalMember(owner = "client!nv", name = "l", descriptor = "Z")
     public static boolean aBoolean500;
