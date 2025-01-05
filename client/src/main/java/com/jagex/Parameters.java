@@ -9,11 +9,11 @@ public final class Parameters {
         var parameters = new HashMap<String, String>();
 
         parameters.put("cabbase", "g.cab");
-        parameters.put("java_arguments", "-Xmx256m -Dsun.java2d.noddraw=true");
+        parameters.put("java_arguments", "-Xmx1024m -Dsun.java2d.noddraw=true");
         parameters.put("colourid", "0");
-        parameters.put("worldid", "1");
-        parameters.put("lobbyid", "1000");
-        parameters.put("lobbyaddress", "127.0.0.1");
+        parameters.put("worldid", "16");
+        parameters.put("lobbyid", "15");
+        parameters.put("lobbyaddress", ClientConfig.HOST_ADDRESS);
         parameters.put("demoid", "0");
         parameters.put("demoaddress", "");
         parameters.put("modewhere", "1");
@@ -29,7 +29,7 @@ public final class Parameters {
         parameters.put("haveie6", "0");
         parameters.put("havefirefox", "1");
         parameters.put("cookieprefix", "");
-        parameters.put("cookiehost", "127.0.0.1");
+        parameters.put("cookiehost", ClientConfig.HOST_ADDRESS);
         parameters.put("cachesubdirid", "0");
         parameters.put("crashurl", "");
         parameters.put("unsignedurl", "");
