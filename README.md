@@ -10,7 +10,7 @@
 
 # runescape-667
 
-Client build [667][build] of [RuneScape 2][rs2], originally released on [2011-10-04][update].
+Client build [667][build] of [RuneScape 2][rs2], originally released on [2011-10-04][update], modified for 2011Scape.
 
 ## Getting Started
 
@@ -90,6 +90,7 @@ Standalone components of the UI are also refactored:
 - Method for a refactored 666 client.
 - Kris for various canonical Jagex terminology.
 - Polar for various canonical Jagex terminology.
+- Scu11 on Rune-Server for the release.
 
 [rs2]: https://www.runescape.com/
 
