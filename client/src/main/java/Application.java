@@ -90,7 +90,7 @@ public final class Application implements AppletStub {
             .map(file -> Toolkit.getDefaultToolkit().getImage(getClass().getResource(file)))
             .collect(Collectors.toList());
 
-        var frame = new Frame("Jagex");
+        var frame = new Frame("2011SScape");
         frame.setIconImages(images);
 
         frame.add(applet);
