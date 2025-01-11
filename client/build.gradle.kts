@@ -23,9 +23,8 @@ application {
     applicationDefaultJvmArgs = listOf("-Xmx1024m", "-Dsun.java2d.noddraw=true")
 }
 
-jar {
-    // Add runescape project's classes to the client JAR
-    from(project(":runescape").sourceSets.main.output) {
-        into("runescape")
+tasks.named<Jar>("jar") {
+    from(project(":runescape").sourceSets["main"].output) {
+        into("runescape")  // This will place runescape's classes into the 'runescape' folder in the JAR
     }
 }
