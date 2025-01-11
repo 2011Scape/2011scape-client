@@ -22,3 +22,10 @@ application {
     mainClass = "Application"
     applicationDefaultJvmArgs = listOf("-Xmx1024m", "-Dsun.java2d.noddraw=true")
 }
+
+jar {
+    // Add runescape project's classes to the client JAR
+    from(project(":runescape").sourceSets.main.output) {
+        into("runescape")
+    }
+}
