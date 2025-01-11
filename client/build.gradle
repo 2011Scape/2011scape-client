@@ -5,8 +5,6 @@ plugins {
 
 dependencies {
     implementation(project(":runescape"))
-    compileOnly project(':deob-annotations')
-    compileOnly 'lib:stub'
     implementation(libs.bouncycastle.bcpkix)
     implementation(libs.jcommander)
 }
