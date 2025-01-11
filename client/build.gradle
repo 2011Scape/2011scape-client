@@ -1,11 +1,18 @@
 plugins {
-    application
+    id 'java'
+    id 'application'
 }
 
 dependencies {
     implementation(project(":runescape"))
+    compileOnly project(':deob-annotations')
+    compileOnly 'lib:stub'
     implementation(libs.bouncycastle.bcpkix)
     implementation(libs.jcommander)
+}
+
+tasks.withType(JavaExec) {
+    workingDir = project.rootDir
 }
 
 java {
@@ -20,5 +27,5 @@ tasks.withType(JavaCompile::class) {
 
 application {
     mainClass = "Application"
-    applicationDefaultJvmArgs = listOf("-Xmx256m", "-Dsun.java2d.noddraw=true")
+    applicationDefaultJvmArgs = listOf("-Xmx1024m", "-Dsun.java2d.noddraw=true")
 }
