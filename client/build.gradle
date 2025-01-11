@@ -19,10 +19,6 @@ java {
     }
 }
 
-tasks.withType(JavaCompile::class) {
-    options.encoding = "UTF-8"
-}
-
 application {
     mainClass = "Application"
     applicationDefaultJvmArgs = listOf("-Xmx1024m", "-Dsun.java2d.noddraw=true")
