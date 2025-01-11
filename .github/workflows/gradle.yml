@@ -34,7 +34,7 @@ jobs:
       uses: gradle/gradle-build-action@v2 # v4.0.0
       
     - name: Replace ClientConfig.HOST_ADDRESS with PROD_IP
-      run: sed -i "s/127.0.0.1/${{ secrets.PROD_IP }}/g" client/src/main/java/com/jagex/ClientConfig.java
+      run: sed -i "s/127.0.0.1/${{ secrets.PROD_IP }}/g" runescape/src/main/java/com/jagex/ClientConfig.java
       
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
