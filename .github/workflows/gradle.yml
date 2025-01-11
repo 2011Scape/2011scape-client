@@ -41,7 +41,7 @@ jobs:
       with:
         name: 2011Scape Client
         path: |
-          client/build/libs/*
+          client/build/*
 
     - name: Run Gradle build
       run: gradle build
