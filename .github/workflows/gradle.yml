@@ -30,6 +30,9 @@ jobs:
 
     - run: ./gradlew build
 
+    - name: Rename jar to 2011Scape-Client.jar
+      run: mv client/build/libs/client.jar client/build/libs/2011Scape-Client.jar
+
     - uses: actions/upload-artifact@v4
       with:
         name: '2011Scape Client'
