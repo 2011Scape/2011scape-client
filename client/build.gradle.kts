@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":runescape"))
+    include(project(":runescape"))
     implementation(libs.bouncycastle.bcpkix)
     implementation(libs.jcommander)
 }
