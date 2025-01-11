@@ -27,4 +27,7 @@ tasks.named<Jar>("jar") {
     from(project(":runescape").sourceSets["main"].output) {
         into("runescape")  // This will place runescape's classes into the 'runescape' folder in the JAR
     }
+    manifest {
+    attributes["Main-Class"] = "Application"  // Replace with your main class
+    }
 }
