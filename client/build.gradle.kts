@@ -22,7 +22,3 @@ application {
     mainClass = "Application"
     applicationDefaultJvmArgs = listOf("-Xmx1024m", "-Dsun.java2d.noddraw=true")
 }
-
-tasks.withType(JavaExec) {
-    workingDir = project.rootDir
-}
