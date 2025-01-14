@@ -1,4 +1,4 @@
-name: Build, Release, and Update Bootstrap
+name: Build, Release, and Update Launcher Config
 
 on:
   push:
@@ -70,10 +70,12 @@ jobs:
     - name: Update Bootstrap JSON
       run: |
         curl -o bootstrap.json https://2011scape.com/downloads/bootstrap.json
-        jq '.artifacts[0].hash = env.hash | .artifacts[0].size = (env.size | tonumber) | .artifacts[0].path = "https://2011scape.com/releases/2011Scape-Client-v${{ github.run_number }}.jar"' bootstrap.json > bootstrap_updated.json
+        jq '.artifacts[0].hash = env.hash |
+            .artifacts[0].size = (env.size | tonumber) |
+            .artifacts[0].path = "https://github.com/2011Scape/2011scape-client/releases/download/v${{ github.run_number }}/2011Scape-Client.jar"' bootstrap.json > bootstrap_updated.json
         mv bootstrap_updated.json bootstrap.json
 
-    # Step 10: Update Bootstrap JSON
+    # Step 10: Deploy Updated Bootstrap JSON
     - name: Deploy Updated Bootstrap JSON
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
