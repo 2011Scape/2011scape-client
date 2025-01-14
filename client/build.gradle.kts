@@ -27,10 +27,12 @@ application {
 tasks.named<Jar>("jar") {
     from(sourceSets.main.get().output)
 
-    // Include runtime dependencies
+    // Include runtime dependencies while excluding META-INF
     from({
         configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
-    })
+    }) {
+        exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
+    }
 
     manifest {
         attributes["Main-Class"] = "Application" // Replace with your actual main class
