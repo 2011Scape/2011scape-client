@@ -35,7 +35,7 @@ tasks.named<Jar>("jar") {
     }
 
     manifest {
-        attributes["Main-Class"] = "Application" // Replace with your actual main class
+        attributes["Main-Class"] = "RS2Loader" // Replace with your actual main class
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
