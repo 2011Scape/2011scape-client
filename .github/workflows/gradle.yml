@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build-and-release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Check Out Code
@@ -32,8 +32,10 @@ jobs:
     - name: Build the JAR
       run: ./gradlew jar --stacktrace
 
-    - name: List JAR Location
-      run: ls -R client/build/libs || echo "No files found in client/build/libs"
+    - name: List JAR Files
+      run: |
+        echo "Listing files in client/build/libs:"
+        ls -R client/build/libs || echo "No files found in client/build/libs"
 
     - name: Rename and Archive JAR
       run: |
@@ -43,25 +45,12 @@ jobs:
         echo "JAR moved to release/2011Scape-Client.jar"
 
     - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v1
       with:
+        name: Release v${{ github.run_number }}
         tag_name: v${{ github.run_number }}
-        release_name: Release v${{ github.run_number }}
         draft: false
         prerelease: false
-        body: |
-          **Production Release**
-          - Commit: ${{ github.sha }}
-          - Branch: ${{ github.ref_name }}
-          - Build Timestamp: ${{ steps.time.outputs.formatted }}
+        files: release/2011Scape-Client.jar
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: release/2011Scape-Client.jar
-        asset_name: 2011Scape-Client.jar
-        asset_content_type: application/java-archive
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
