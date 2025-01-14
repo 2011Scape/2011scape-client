@@ -3,7 +3,6 @@ import com.beust.jcommander.ParameterException;
 import com.jagex.ClientConfig;
 import com.jagex.Parameters;
 import com.jagex.awt.CloseWindowListener;
-import com.jagex.crypto.rsa.RsaPublicKeyReader;
 import com.jagex.game.runetek6.client.GameShell;
 
 import java.applet.Applet;
@@ -19,13 +18,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.jagex.Messages.JAWT_FAILED;
-import static com.jagex.Messages.JS5_KEY_READING;
-import static com.jagex.Messages.LOGIN_KEY_READING;
-import static com.jagex.Messages.formatAbsolute;
 import static com.jagex.awt.Dimensions.MINIMUM_SIZE;
 import static com.jagex.awt.Dimensions.PREFERRED_SIZE;
 
-public final class Application implements AppletStub {
+public final class RS2Loader implements AppletStub {
 
     public static void main(String[] args) {
         try {
@@ -43,7 +39,7 @@ public final class Application implements AppletStub {
             } else {
                 var documentBase = new URL(parsed.getDocumentBase());
                 var parameters = Parameters.createDefault();
-                var application = new Application(documentBase, parameters);
+                var application = new RS2Loader(documentBase, parameters);
                 application.start();
             }
         } catch (ParameterException ex) {
@@ -62,7 +58,7 @@ public final class Application implements AppletStub {
 
     private final Map<String, String> parameters;
 
-    public Application(URL documentBase, Map<String, String> parameters) {
+    public RS2Loader(URL documentBase, Map<String, String> parameters) {
         this.documentBase = documentBase;
         this.parameters = parameters;
     }

@@ -19,7 +19,7 @@ tasks.withType<JavaCompile> {
 }
 
 application {
-    mainClass.set("Application") // Replace with your actual main class
+    mainClass.set("RS2Loader") // Replace with your actual main class
     applicationDefaultJvmArgs = listOf("-Xmx1024m", "-Dsun.java2d.noddraw=true")
 }
 
