@@ -1,12 +1,9 @@
-<p align="center">
-    <a href="https://github.com/StrongHold/runescape-667?tab=readme-ov-file#readme" rel="noopener noreferrer">
-        <img src="https://github.com/StrongHold/runescape-667/raw/master/logo.png" alt="RuneScape Logo" />
-    </a>
-    <br />
-    <a href="https://github.com/StrongHold/runescape-667?tab=readme-ov-file#readme" rel="noopener noreferrer">
-        <img src="https://github.com/StrongHold/runescape-667/raw/master/preview.png" alt="Preview" />
-    </a>
-</p>
+<p align="center"><img src="https://github.com/2011Scape/installation-guide/assets/75695035/6b99c832-6d62-4811-bdda-143d72c13c7a" alt="2011scape Logo Image - Open Source GitHub Repository for 2011Scape" />
+
+<img src="https://github.com/2011Scape/game/assets/75695035/db690407-bc57-437a-aa86-f692f9983bbe" alt="2011scape Banner Screenshot Image - Player woodcutting maple trees." /></p>
+
+
+[![license][license-badge]][isc] [![discord-badge]][discord]
 
 # 2011Scape Client
 
