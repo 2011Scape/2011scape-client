@@ -1,4 +1,4 @@
-name: Build with Gradle
+name: Build and Release with Gradle
 
 on:
   push:
@@ -27,12 +27,13 @@ jobs:
       run: sed -i "s/127.0.0.1/${{ secrets.PROD_IP }}/g" runescape/src/main/java/com/jagex/ClientConfig.java
 
     - name: Build the JAR
-      run: ./gradlew jar
+      run: ./gradlew jar --stacktrace
 
     - name: Rename and Archive JAR
       run: |
         mkdir -p release
-        mv build/libs/2011Scape-Client.jar release/2011Scape-Client.jar || mv build/libs/*.jar release/2011Scape-Client.jar
+        mv client/build/libs/client.jar client/build/libs/2011Scape-Client.jar || echo "client.jar not found"
+        mv client/build/libs/2011Scape-Client.jar release/ || echo "Renamed JAR not found"
         echo "JAR moved to release/2011Scape-Client.jar"
 
     - name: Create GitHub Release
