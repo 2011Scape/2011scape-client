@@ -1,4 +1,4 @@
-name: Build and Release with Gradle
+name: Build, Release, and Update Bootstrap
 
 on:
   push:
@@ -10,33 +10,34 @@ permissions:
   contents: write
 
 jobs:
-  build-and-release:
+  build-release-deploy:
     runs-on: ubuntu-22.04
 
     steps:
+    # Step 1: Check Out Code
     - name: Check Out Code
       uses: actions/checkout@v4
 
+    # Step 2: Set Up Java
     - name: Set Up Java
       uses: actions/setup-java@v4
       with:
         distribution: temurin
         java-version: 11
 
+    # Step 3: Set Up Gradle
     - name: Set Up Gradle
       uses: gradle/actions/setup-gradle@v4
 
+    # Step 4: Replace ClientConfig Host Address with PROD_IP
     - name: Replace ClientConfig.HOST_ADDRESS with PROD_IP
       run: sed -i "s/127.0.0.1/${{ secrets.PROD_IP }}/g" runescape/src/main/java/com/jagex/ClientConfig.java
 
+    # Step 5: Build the JAR
     - name: Build the JAR
       run: ./gradlew jar --stacktrace
 
-    - name: List JAR Files
-      run: |
-        echo "Listing files in client/build/libs:"
-        ls -R client/build/libs || echo "No files found in client/build/libs"
-
+    # Step 6: Rename and Archive JAR
     - name: Rename and Archive JAR
       run: |
         mkdir -p release
@@ -44,6 +45,16 @@ jobs:
         mv client/build/libs/2011Scape-Client.jar release/ || echo "Renamed JAR not found"
         echo "JAR moved to release/2011Scape-Client.jar"
 
+    # Step 7: Calculate JAR Hash and Size
+    - name: Calculate JAR Hash and Size
+      id: artifact_info
+      run: |
+        HASH=$(sha256sum release/2011Scape-Client.jar | awk '{ print $1 }')
+        SIZE=$(stat --printf="%s" release/2011Scape-Client.jar)
+        echo "hash=$HASH" >> $GITHUB_ENV
+        echo "size=$SIZE" >> $GITHUB_ENV
+
+    # Step 8: Create GitHub Release
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
@@ -54,3 +65,21 @@ jobs:
         files: release/2011Scape-Client.jar
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+    # Step 9: Update Bootstrap JSON
+    - name: Update Bootstrap JSON
+      run: |
+        curl -o bootstrap.json https://2011scape.com/downloads/bootstrap.json
+        jq '.artifacts[0].hash = env.hash | .artifacts[0].size = (env.size | tonumber) | .artifacts[0].path = "https://2011scape.com/releases/2011Scape-Client-v${{ github.run_number }}.jar"' bootstrap.json > bootstrap_updated.json
+        mv bootstrap_updated.json bootstrap.json
+
+    # Step 10: Update Bootstrap JSON
+    - name: Deploy Updated Bootstrap JSON
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh -o StrictHostKeyChecking=no -p 2222 deployer@185.213.26.59 "mkdir -p /var/www/html/downloads"
+        scp -P 2222 bootstrap.json deployer@185.213.26.59:/var/www/html/downloads/bootstrap.json
