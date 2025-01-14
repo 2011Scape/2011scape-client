@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
     implementation(project(":runescape"))
+    implementation("org.bouncycastle:bcpkix-jdk18on:1.79")
+    runtimeOnly("org.jcommander:jcommander:2.0")
 }
 
 java {
