@@ -49,7 +49,6 @@ jobs:
           - Commit: ${{ github.sha }}
           - Branch: ${{ github.ref_name }}
           - Build Timestamp: ${{ steps.time.outputs.formatted }}
-        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
