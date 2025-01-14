@@ -16,7 +16,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "runescape-667"
+rootProject.name = "2011scape-client"
 
 include(
     "client",
