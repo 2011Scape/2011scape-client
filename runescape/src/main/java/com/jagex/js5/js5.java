@@ -137,17 +137,20 @@ public final class js5 {
         @Pc(22) int clen = packet.g4();
 
         if ((clen < 0) || ((maxsize != 0) && (clen > maxsize))) {
-            throw new RuntimeException("ctype=" + ctype + " clen=" + clen + " maxsize=" + maxsize);
-        } else if (ctype == CompressionType.NONE) {
+            System.err.println("Invalid compressed length detected: ctype=" + ctype + ", clen=" + clen + ", maxsize=" + maxsize);
+            return new byte[0]; // Return an empty array to signal invalid data
+        }
+
+        if (ctype == CompressionType.NONE) {
             @Pc(98) byte[] decoded = new byte[clen];
             packet.gdata(0, clen, decoded);
             return decoded;
         } else {
             @Pc(44) int ulen = packet.g4();
             if ((ulen < 0) || ((maxsize != 0) && (ulen > maxsize))) {
-                throw new RuntimeException("ctype=" + ctype + " clen=" + clen + " ulen=" + ulen + " maxsize=" + maxsize);
+                System.err.println("Invalid uncompressed length detected: ctype=" + ctype + ", clen=" + clen + ", ulen=" + ulen + ", maxsize=" + maxsize);
+                return new byte[0]; // Return an empty array to signal invalid data
             }
-
             @Pc(66) byte[] decoded = new byte[ulen];
             if (ctype == CompressionType.BZIP2) {
                 BzipDecompressor.bunzip(decoded, ulen, compressed, clen);
@@ -157,7 +160,6 @@ public final class js5 {
                     GzipDecompressor.INSTANCE.gunzip(packet, decoded);
                 }
             }
-
             return decoded;
         }
     }
