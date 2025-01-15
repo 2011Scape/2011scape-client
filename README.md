@@ -11,7 +11,9 @@ Client build [667][build] of [RuneScape 2][rs2], originally released on [2011-10
 
 ## Getting Started
 
-Run the client using RS2Loader.java:
+Run the client using `RS2Loader.java`:
+
+Requires JDK 11.
 
 ## Naming
 
