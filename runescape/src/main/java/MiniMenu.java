@@ -217,7 +217,7 @@ public final class MiniMenu {
     public static int subMenuMinLength = -1;
 
     @OriginalMember(owner = "client!gi", name = "d", descriptor = "Z")
-    public static boolean shiftClick = false;
+    public static boolean shiftClick = true;
 
     @OriginalMember(owner = "client!qt", name = "c", descriptor = "I")
     public static int anInt8149 = 0;
