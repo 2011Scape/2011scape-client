@@ -1,4 +1,4 @@
- package rs2.client.event.mouse;
+package rs2.client.event.mouse;
 
 import com.jagex.core.datastruct.key.Deque;
 import com.jagex.core.util.SystemTimer;
