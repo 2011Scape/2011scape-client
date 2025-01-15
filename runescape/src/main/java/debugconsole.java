@@ -192,6 +192,7 @@ public final class debugconsole {
                 addline("renderer - Print graphics renderer information");
                 addline("heap - Print java memory information");
                 addline("getcamerapos - Print location and direction of camera for use in bug reports");
+                addline("shiftclick - Toggle shift-click QoL feature for swapping mini menu options.");
                 return;
             }
             if (command.equalsIgnoreCase("cls")) {
