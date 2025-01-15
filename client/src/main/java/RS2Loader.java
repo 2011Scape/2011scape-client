@@ -91,11 +91,11 @@ public final class RS2Loader implements AppletStub {
         client.init();
         client.start();
 
-        var images = Stream.of("icon25.png", "icon52.png")
+        var images = Stream.of("icon16.png", "icon32.png", "icon48.png")
             .map(file -> Toolkit.getDefaultToolkit().getImage(getClass().getResource(file)))
             .collect(Collectors.toList());
 
-        var frame = new Frame("2011Scape");
+        var frame = new Frame("2011SScape");
         frame.setIconImages(images);
 
         frame.add(applet);
