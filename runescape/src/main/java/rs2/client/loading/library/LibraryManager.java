@@ -164,61 +164,55 @@ public final class LibraryManager {
     @OriginalMember(owner = "client!cu", name = "a", descriptor = "(Ljava/lang/Class;ZLjava/lang/String;)Z")
     public static boolean loadNative(@OriginalArg(0) Class libraryClazz, @OriginalArg(2) String name) {
         @Pc(15) Class nativeClazz = (Class) nativeLibraries.get(name);
+
+        // Check if the native library is already loaded
         if (nativeClazz != null) {
             if (debug) {
                 System.out.println("Native library already loaded in another class loader: " + signLink.osNameLower);
             }
-
             return nativeClazz.getClassLoader() == libraryClazz.getClassLoader();
         }
 
         @Pc(31) File file = null;
+
+        // Retrieve the file associated with the library name
         if (file == null) {
             file = (File) libraries.get(name);
         }
 
         if (file != null) {
             try {
-				file = new File(file.getCanonicalPath());
-				@Pc(51) Class runtime = Class.forName("java.lang.Runtime");
-				@Pc(56) Class object = Class.forName("java.lang.reflect.AccessibleObject");
-				@Pc(68) Method setAccessible = object.getDeclaredMethod("setAccessible", Boolean.TYPE);
-				@Pc(90) Method load0 = runtime.getDeclaredMethod("load0", Class.forName("java.lang.Class"), Class.forName("java.lang.String"));
-				setAccessible.invoke(load0, Boolean.TRUE);
-				load0.invoke(Runtime.getRuntime(), libraryClazz, file.getPath());
-				setAccessible.invoke(load0, Boolean.FALSE);
-				nativeLibraries.put(name, libraryClazz);
+                // Resolve the canonical path of the library file
+                file = new File(file.getCanonicalPath());
+
+                // Securely load the native library using System.load()
+                System.load(file.getPath());
+
+                // Register the loaded library
+                nativeLibraries.put(name, libraryClazz);
 
                 if (debug) {
                     System.out.println("Loaded " + name);
                 }
 
-				return true;
-			} catch (@Pc(133) NoSuchMethodException ignored) {
-                System.load(file.getPath());
-                nativeLibraries.put(name, aClass6 == null ? (aClass6 = getClass("rs2.client.loading.library.NativeLibrary")) : aClass6);
+                return true; // Successfully loaded the library
 
+            } catch (@Pc(120) UnsatisfiedLinkError e) {
+                // Handle errors related to loading the native library
                 if (debug) {
-                    System.out.println("Loaded " + name + " using fallback!");
+                    System.out.println(name + " load failed");
+                    e.printStackTrace();
                 }
-
-                return true;
-            } catch (@Pc(154) Throwable throwable) {
+            } catch (@Pc(130) Throwable throwable) {
+                // Handle any other unexpected errors
                 if (debug) {
-                    System.out.println(name + "load failed");
+                    System.out.println("Unexpected error while loading " + name);
                     throwable.printStackTrace();
-                    Throwable cause = throwable.getCause();
-                    if (cause != null) {
-                        System.out.println("Reason:");
-                        cause.printStackTrace();
-                    }
-                } else {
-                    throwable.getCause().printStackTrace();
                 }
             }
         }
 
-        return false;
+        return false; // Return false if the library could not be loaded
     }
 
     static Class getClass(String name) {
