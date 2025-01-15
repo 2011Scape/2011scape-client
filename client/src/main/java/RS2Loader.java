@@ -14,6 +14,9 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,12 +39,18 @@ public final class RS2Loader implements AppletStub {
 
             if (parsed.help()) {
                 jcommander.usage();
-            } else {
-                var documentBase = new URL(parsed.getDocumentBase());
-                var parameters = Parameters.createDefault();
-                var application = new RS2Loader(documentBase, parameters);
-                application.start();
+                return;
             }
+
+            // Enable debug logging if --debug is passed
+            if (parsed.isDebug()) {
+                enableDebugLogging();
+            }
+
+            var documentBase = new URL(parsed.getDocumentBase());
+            var parameters = Parameters.createDefault();
+            var application = new RS2Loader(documentBase, parameters);
+            application.start();
         } catch (ParameterException ex) {
             System.out.println(ex.getMessage());
             System.out.println();
@@ -110,6 +119,18 @@ public final class RS2Loader implements AppletStub {
     private void setLoginPublicKey() throws IOException {
         ClientConfig.RSA_EXPONENT = ClientConfig.RSA_EXPONENT;
         ClientConfig.LOGIN_MODULUS = ClientConfig.LOGIN_MODULUS;
+    }
+
+    private static void enableDebugLogging() {
+        Logger rootLogger = Logger.getLogger("");
+        rootLogger.setLevel(Level.FINE);
+
+        // Add a ConsoleHandler to display debug messages
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(Level.FINE);
+        rootLogger.addHandler(consoleHandler);
+
+        System.out.println("Debug mode enabled. Detailed logs will be visible.");
     }
 
     private void tryLoadJawt() {

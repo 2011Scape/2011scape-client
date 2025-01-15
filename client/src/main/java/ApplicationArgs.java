@@ -1,8 +1,6 @@
 import com.beust.jcommander.Parameter;
 import com.jagex.ClientConfig;
 
-import java.nio.file.Path;
-
 public final class ApplicationArgs {
 
     @Parameter(
@@ -24,5 +22,15 @@ public final class ApplicationArgs {
 
     public boolean help() {
         return help;
+    }
+
+    @Parameter(
+        names = "--debug",
+        description = "Enable debug mode for troubleshooting"
+    )
+    private boolean debug = false;
+
+    public boolean isDebug() {
+        return debug;
     }
 }
