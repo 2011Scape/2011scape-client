@@ -889,9 +889,12 @@ public final class LoginManager {
             ConnectionInfo.game.defaultPort = 50015;
             ConnectionInfo.game.alternatePort = 50015;
             ConnectionInfo.game.world = 15;
+            return;
         }
+
         if (type == TYPE_LOBBY) {
             lobbyLoginResponse = response;
+
         } else if (type == TYPE_GAME) {
             gameLoginResponse = response;
         }
@@ -1125,7 +1128,6 @@ public final class LoginManager {
             type = TYPE_LOBBY;
         }
         doLogin(false, username, false, password);
-
     }
 
     @OriginalMember(owner = "client!tk", name = "a", descriptor = "(II)V")
