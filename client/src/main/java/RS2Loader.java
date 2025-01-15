@@ -95,7 +95,7 @@ public final class RS2Loader implements AppletStub {
             .map(file -> Toolkit.getDefaultToolkit().getImage(getClass().getResource(file)))
             .collect(Collectors.toList());
 
-        var frame = new Frame("2011SScape");
+        var frame = new Frame("2011Scape");
         frame.setIconImages(images);
 
         frame.add(applet);
