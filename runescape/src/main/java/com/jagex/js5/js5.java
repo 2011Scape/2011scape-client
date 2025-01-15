@@ -145,7 +145,7 @@ public final class js5 {
         } else {
             @Pc(44) int ulen = packet.g4();
             if ((ulen < 0) || ((maxsize != 0) && (ulen > maxsize))) {
-                throw new RuntimeException("ctype=" + ctype + " clen=" + clen + " ulen=" + ulen + " maxsize=" + maxsize);
+                return new byte[1];
             }
 
             @Pc(66) byte[] decoded = new byte[ulen];
