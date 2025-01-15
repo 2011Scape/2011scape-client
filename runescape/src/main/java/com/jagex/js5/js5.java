@@ -140,43 +140,21 @@ public final class js5 {
         Packet packet = new Packet(compressed);
         int ctype = packet.g1(); // Compression type
         int clen = packet.g4();  // Compressed length
-        int ulen = packet.g4();  // Uncompressed length
 
-        // Update to allow extra-large files
-        final int MAX_DECOMPRESSED_SIZE = 200_000_000; // 200 MB max decompressed size
+        // Define a maximum decompressed size if not available in config
+        final int MAX_DECOMPRESSED_SIZE = 100_000_000; // 100 MB as a default
 
-        if (ulen < 0) {
-            System.err.println("Error: Negative uncompressed length. ulen=" + ulen);
+        int ulen = packet.g4(); // Uncompressed length
+
+        // Validate uncompressed length
+        if (ulen < 0 || ulen > MAX_DECOMPRESSED_SIZE) {
+            System.err.println("Invalid uncompressed length: ulen=" + ulen + ", clen=" + clen + ", ctype=" + ctype);
             return new byte[0];
         }
 
-        if (clen <= 0) {
-            System.err.println("Error: Negative compressed length. clen=" + clen);
-            return new byte[0];
-        }
-
-        // Debugging within valid ranges
-        System.out.println("Debug: Validating clen=" + clen + ", ulen=" + ulen + ", ctype=" + ctype);
-
-        // Ensure ulen is within reasonable structure
-        if (ulen > MAX_DECOMPRESSED_SIZE) {
-            System.err.println("Warning: Uncompressed length exceeds maximum but allowed. ulen=" + ulen);
-        }
-
-        byte[] decoded;
-
+        byte[] decoded = new byte[ulen];
         try {
-            // Allocate memory for decompressed data
-            decoded = new byte[ulen];
-        } catch (OutOfMemoryError e) {
-            System.err.println("Failed to allocate memory for ulen=" + ulen);
-            return new byte[0];
-        }
-
-        try {
-            if (ctype == 0) { // Handle no compression case
-                System.arraycopy(compressed, 0, decoded, 0, clen);
-            } else if (ctype == CompressionType.BZIP2) {
+            if (ctype == CompressionType.BZIP2) {
                 BzipDecompressor.bunzip(decoded, ulen, compressed, clen);
             } else if (ctype == CompressionType.GZIP) {
                 synchronized (GzipDecompressor.INSTANCE) {
@@ -187,7 +165,7 @@ public final class js5 {
                 return new byte[0];
             }
         } catch (Exception e) {
-            System.err.println("Decompression failed. Error: " + e.getMessage());
+            System.err.println("Decompression failed: " + e.getMessage());
             return new byte[0];
         }
 
