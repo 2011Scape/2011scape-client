@@ -131,7 +131,7 @@ public final class js5 {
     public static final int maxsize = 0;
 
     @OriginalMember(owner = "client!ska", name = "a", descriptor = "([BB)[B")
-    public static byte[] decodeContainer(@OriginalArg(0) byte[] compressed) {
+    public static byte[] decodeContainer(byte[] compressed) {
         if (compressed == null || compressed.length == 0) {
             System.err.println("Error: Empty or null compressed input.");
             return new byte[0];
@@ -141,37 +141,34 @@ public final class js5 {
         int ctype = packet.g1(); // Compression type
         int clen = packet.g4();  // Compressed length
 
-        // Validate compressed length
-        if (clen < 0 || (maxsize != 0 && clen > maxsize)) {
-            System.err.println("Invalid compressed length: clen=" + clen + ", maxsize=" + maxsize);
-            return new byte[0];
-        }
-
-        if (ctype == CompressionType.NONE) {
-            byte[] decoded = new byte[clen];
-            packet.gdata(0, clen, decoded);
-            return decoded;
-        }
+        // Define a maximum decompressed size if not available in config
+        final int MAX_DECOMPRESSED_SIZE = 100_000_000; // 100 MB as a default
 
         int ulen = packet.g4(); // Uncompressed length
 
         // Validate uncompressed length
-        if (ulen < 0 || ulen > 100_000_000) { // Set reasonable max size
+        if (ulen < 0 || ulen > MAX_DECOMPRESSED_SIZE) {
             System.err.println("Invalid uncompressed length: ulen=" + ulen + ", clen=" + clen + ", ctype=" + ctype);
             return new byte[0];
         }
 
         byte[] decoded = new byte[ulen];
-        if (ctype == CompressionType.BZIP2) {
-            BzipDecompressor.bunzip(decoded, ulen, compressed, clen);
-        } else if (ctype == CompressionType.GZIP) {
-            synchronized (GzipDecompressor.INSTANCE) {
-                GzipDecompressor.INSTANCE.gunzip(packet, decoded);
+        try {
+            if (ctype == CompressionType.BZIP2) {
+                BzipDecompressor.bunzip(decoded, ulen, compressed, clen);
+            } else if (ctype == CompressionType.GZIP) {
+                synchronized (GzipDecompressor.INSTANCE) {
+                    GzipDecompressor.INSTANCE.gunzip(packet, decoded);
+                }
+            } else {
+                System.err.println("Unsupported compression type: ctype=" + ctype);
+                return new byte[0];
             }
-        } else {
-            System.err.println("Unsupported compression type: ctype=" + ctype);
+        } catch (Exception e) {
+            System.err.println("Decompression failed: " + e.getMessage());
             return new byte[0];
         }
+
         return decoded;
     }
 
