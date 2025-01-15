@@ -132,36 +132,47 @@ public final class js5 {
 
     @OriginalMember(owner = "client!ska", name = "a", descriptor = "([BB)[B")
     public static byte[] decodeContainer(@OriginalArg(0) byte[] compressed) {
-        @Pc(8) Packet packet = new Packet(compressed);
-        @Pc(18) int ctype = packet.g1();
-        @Pc(22) int clen = packet.g4();
+        if (compressed == null || compressed.length == 0) {
+            System.err.println("Error: Empty or null compressed input.");
+            return new byte[0];
+        }
 
-        if ((clen < 0) || ((maxsize != 0) && (clen > maxsize))) {
-            System.err.println("Invalid compressed length detected: ctype=" + ctype + ", clen=" + clen + ", maxsize=" + maxsize);
-            return new byte[0]; // Return an empty array to signal invalid data
+        Packet packet = new Packet(compressed);
+        int ctype = packet.g1(); // Compression type
+        int clen = packet.g4();  // Compressed length
+
+        // Validate compressed length
+        if (clen < 0 || (maxsize != 0 && clen > maxsize)) {
+            System.err.println("Invalid compressed length: clen=" + clen + ", maxsize=" + maxsize);
+            return new byte[0];
         }
 
         if (ctype == CompressionType.NONE) {
-            @Pc(98) byte[] decoded = new byte[clen];
+            byte[] decoded = new byte[clen];
             packet.gdata(0, clen, decoded);
             return decoded;
-        } else {
-            @Pc(44) int ulen = packet.g4();
-            if ((ulen < 0) || ((maxsize != 0) && (ulen > maxsize))) {
-                System.err.println("Invalid uncompressed length detected: ctype=" + ctype + ", clen=" + clen + ", ulen=" + ulen + ", maxsize=" + maxsize);
-                return new byte[0]; // Return an empty array to signal invalid data
-            }
-            @Pc(66) byte[] decoded = new byte[ulen];
-            if (ctype == CompressionType.BZIP2) {
-                BzipDecompressor.bunzip(decoded, ulen, compressed, clen);
-            } else {
-                @Pc(73) GzipDecompressor local73 = GzipDecompressor.INSTANCE;
-                synchronized (GzipDecompressor.INSTANCE) {
-                    GzipDecompressor.INSTANCE.gunzip(packet, decoded);
-                }
-            }
-            return decoded;
         }
+
+        int ulen = packet.g4(); // Uncompressed length
+
+        // Validate uncompressed length
+        if (ulen < 0 || ulen > 100_000_000) { // Set reasonable max size
+            System.err.println("Invalid uncompressed length: ulen=" + ulen + ", clen=" + clen + ", ctype=" + ctype);
+            return new byte[0];
+        }
+
+        byte[] decoded = new byte[ulen];
+        if (ctype == CompressionType.BZIP2) {
+            BzipDecompressor.bunzip(decoded, ulen, compressed, clen);
+        } else if (ctype == CompressionType.GZIP) {
+            synchronized (GzipDecompressor.INSTANCE) {
+                GzipDecompressor.INSTANCE.gunzip(packet, decoded);
+            }
+        } else {
+            System.err.println("Unsupported compression type: ctype=" + ctype);
+            return new byte[0];
+        }
+        return decoded;
     }
 
     public static String whirlpoolToString(byte[] whirlpool) {
