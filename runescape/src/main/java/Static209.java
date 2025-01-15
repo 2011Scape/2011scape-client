@@ -1,3 +1,4 @@
+import com.jagex.ClientConfig;
 import com.jagex.graphics.Toolkit;
 import org.openrs2.deob.annotation.OriginalMember;
 
@@ -11,7 +12,7 @@ public final class Static209 {
 
     @OriginalMember(owner = "client!gi", name = "c", descriptor = "(I)V")
     public static void method3110() {
-        Static329.anInt1752 = (int) ((double) Static720.mapWidth * 34.46D);
+        Static329.anInt1752 = (int) ((double) Static720.mapWidth * 34.46D) * ClientConfig.FOG_DISTANCE_MULTIPLIER;;
         Static32.anInt775 = 200;
         Static329.anInt1752 <<= 0x2;
         if (Toolkit.active.increaseRenderDistance()) {

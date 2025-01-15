@@ -1,4 +1,5 @@
 import com.jagex.Client;
+import com.jagex.ClientConfig;
 import com.jagex.ClientProt;
 import com.jagex.core.constants.AreaMode;
 import com.jagex.core.constants.MainLogicStep;
@@ -142,14 +143,14 @@ public final class Static489 {
 
             if (local287 != null) {
                 local299 = (Static89.zoneIds[local282] >> 8) * 64 - WorldMap.areaBaseX;
-                @Pc(310) int local310 = (Static89.zoneIds[local282] & 0xFF) * 64 - WorldMap.areaBaseZ;
+                @Pc(310) int renderDistance = (Static89.zoneIds[local282] & 0xFF) * 64 - WorldMap.areaBaseZ;
 
                 if (Static117.areaMode != AreaMode.STATIC_AREA) {
                     local299 = 10;
-                    local310 = 10;
+                    renderDistance = 10;
                 }
 
-                local10 &= Static213.method3141(local287, local299, Static720.mapWidth, local310, Static501.mapLength);
+                local10 &= Static213.method3141(local287, local299, Static720.mapWidth, renderDistance, Static501.mapLength);
             }
 
             local287 = Static421.aByteArrayArray19[local282];
@@ -191,9 +192,9 @@ public final class Static489 {
 
         @Pc(310) int renderDistance;
         if (ClientOptions.instance.fog.getValue() == 1) {
-            renderDistance = Static571.FOG_RENDER_DISTANCE[Static537.buildArea];
+            renderDistance = Static571.FOG_RENDER_DISTANCE[Static537.buildArea] * ClientConfig.RENDER_DISTANCE_MULTIPLIER;
         } else {
-            renderDistance = Static506.RENDER_DISTANCE[Static537.buildArea];
+            renderDistance = Static506.RENDER_DISTANCE[Static537.buildArea] * ClientConfig.RENDER_DISTANCE_MULTIPLIER;
         }
         if (Toolkit.active.increaseRenderDistance()) {
             renderDistance++;
