@@ -1,8 +1,8 @@
 import com.jagex.Client;
-import com.jagex.game.runetek6.client.GameShell;
 import com.jagex.IndexedImage;
 import com.jagex.core.constants.HintArrowType;
 import com.jagex.core.util.TimeUtils;
+import com.jagex.game.runetek6.client.GameShell;
 import com.jagex.game.runetek6.config.defaults.GraphicsDefaults;
 import com.jagex.game.runetek6.config.hitmarktype.HitmarkType;
 import com.jagex.game.runetek6.config.hitmarktype.HitmarkTypeList;
@@ -43,15 +43,15 @@ public final class OverlayManager {
 
     @OriginalMember(owner = "client!td", name = "a", descriptor = "(IIIIIIZ)V")
     public static void render(@OriginalArg(0) int screenY, @OriginalArg(1) int screenWidth, @OriginalArg(4) int screenX, @OriginalArg(5) int screenHeight) {
-        @Pc(7) int playerCount = PlayerList.highResolutionPlayerCount;
+        @Pc(7) int playerCount = PlayerList.highResolutionCount;
         chatLineCount = 0;
-        @Pc(11) int[] playerIndices = PlayerList.highResolutionPlayerIndices;
+        @Pc(11) int[] playerIndices = PlayerList.highResolutionSlots;
 
         @Pc(20) int count;
         if (CutsceneManager.state == 3) {
             count = CutsceneManager.actors.length;
         } else {
-            count = NPCList.localNpcCount + playerCount;
+            count = NPCList.size + playerCount;
         }
 
         for (@Pc(27) int i = 0; i < count; i++) {
@@ -85,7 +85,7 @@ public final class OverlayManager {
                 if (i < playerCount) {
                     entity = PlayerList.highResolutionPlayers[playerIndices[i]];
                 } else {
-                    entity = ((NPCEntityNode) NPCList.local.get(NPCList.localNpcIndices[i - playerCount])).npc;
+                    entity = ((NPCEntityNode) NPCList.local.get(NPCList.slots[i - playerCount])).npc;
                     npcType = ((NPCEntity) entity).type;
 
                     if (npcType.multinpcs != null) {
@@ -320,7 +320,7 @@ public final class OverlayManager {
                     for (@Pc(504) int j = 0; j < hintArrows.length; j++) {
                         @Pc(913) HintArrow hintArrow = hintArrows[j];
 
-                        if (hintArrow != null && hintArrow.type == HintArrowType.NPC && NPCList.localNpcIndices[i - playerCount] == hintArrow.entity) {
+                        if (hintArrow != null && hintArrow.type == HintArrowType.NPC && NPCList.slots[i - playerCount] == hintArrow.entity) {
                             @Pc(381) Sprite headicon = Sprites.hintHeadicons[hintArrow.sprite];
                             if (headicon.getHeight() > maxHeight) {
                                 maxHeight = headicon.getHeight();

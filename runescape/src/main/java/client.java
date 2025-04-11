@@ -524,8 +524,8 @@ public final class client extends GameShell {
         Static443.method5981();
         World.tick++;
 
-        for (@Pc(46) int i = 0; i < NPCList.newNpcCount; i++) {
-            @Pc(97) NPCEntity npc = NPCList.localNpcs[i].npc;
+        for (@Pc(46) int i = 0; i < NPCList.newSize; i++) {
+            @Pc(97) NPCEntity npc = NPCList.entities[i].npc;
 
             if (npc != null) {
                 @Pc(103) byte movementCapabilities = npc.type.movementCapabilities;
@@ -551,15 +551,15 @@ public final class client extends GameShell {
                                 destZ = Static501.mapLength - size - 1;
                             }
 
-                            @Pc(258) int pathLength = PathFinder.findPath(Client.collisionMaps[npc.level], Static480.anIntArray583, Static70.anIntArray147, npc.pathX[0], npc.pathZ[0], size, destX, destZ, size, size, -1, 0, 0, true);
+                            @Pc(258) int pathLength = PathFinder.findPath(Client.collisionMaps[npc.level], PlayerEntity.runZ, PlayerEntity.runX, npc.pathX[0], npc.pathZ[0], size, destX, destZ, size, size, -1, 0, 0, true);
                             if (pathLength > 0) {
                                 if (pathLength > 9) {
                                     pathLength = 9;
                                 }
 
                                 for (@Pc(274) int j = 0; j < pathLength; j++) {
-                                    npc.pathX[j] = Static70.anIntArray147[pathLength - j - 1];
-                                    npc.pathZ[j] = Static480.anIntArray583[pathLength - j - 1];
+                                    npc.pathX[j] = PlayerEntity.runX[pathLength - j - 1];
+                                    npc.pathZ[j] = PlayerEntity.runZ[pathLength - j - 1];
                                     npc.pathSpeed[j] = MoveSpeed.WALK;
                                 }
 
@@ -572,7 +572,7 @@ public final class client extends GameShell {
                     @Pc(142) int deltaYaw = Static112.turnTick(npc);
                     Static145.wornTargetTick(npc);
                     Static651.basTick(Static521.entityMoveSpeed, deltaYaw, Static524.entityMoveFlags, npc);
-                    Static702.updateActionAnimator(npc, Static521.entityMoveSpeed);
+                    PathingEntity.updateActionAnimator(npc, Static521.entityMoveSpeed);
                     Static50.animationTick(npc);
                 }
             }

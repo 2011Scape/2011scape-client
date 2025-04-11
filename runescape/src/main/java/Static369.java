@@ -40,7 +40,7 @@ public final class Static369 {
                 }
                 @Pc(66) Packet local66 = new Packet(Static363.aByteArrayArray22[local13]);
                 @Pc(68) int local68 = 0;
-                while (Static363.aByteArrayArray22[local13].length > local66.pos && local68 < 511 && NPCList.localNpcCount < 1023) {
+                while (Static363.aByteArrayArray22[local13].length > local66.pos && local68 < 511 && NPCList.size < 1023) {
                     @Pc(88) int local88 = local20 | local68++ << 6;
                     @Pc(94) int local94 = local66.g2();
                     @Pc(98) int local98 = local94 >> 14;
@@ -52,11 +52,11 @@ public final class Static369 {
                     @Pc(149) NPCEntityNode local149 = (NPCEntityNode) NPCList.local.get(local88);
                     if (local149 == null && (local142.movementCapabilities & 0x1) > 0 && local98 == Static164.areaLevel && local121 >= 0 && local142.size + local121 < Static720.mapWidth && local135 >= 0 && local135 + local142.size < Static501.mapLength) {
                         @Pc(197) NPCEntity local197 = new NPCEntity();
-                        local197.id = local88;
+                        local197.slot = local88;
                         @Pc(205) NPCEntityNode local205 = new NPCEntityNode(local197);
                         NPCList.local.put(local88, local205);
-                        NPCList.localNpcs[NPCList.newNpcCount++] = local205;
-                        NPCList.localNpcIndices[NPCList.localNpcCount++] = local88;
+                        NPCList.entities[NPCList.newSize++] = local205;
+                        NPCList.slots[NPCList.size++] = local88;
                         local197.cutsceneClock = TimeUtils.clock;
                         local197.setupNewNPCType(local142);
                         local197.setSize(local197.type.size);
