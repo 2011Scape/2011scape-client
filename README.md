@@ -1,11 +1,18 @@
-<p align="center"><img src="https://github.com/2011Scape/installation-guide/assets/75695035/6b99c832-6d62-4811-bdda-143d72c13c7a" alt="2011scape Logo Image - Open Source GitHub Repository for 2011Scape" />
+<div align="center">
+<h1>2011Scape</h1>
+<a href="https://github.com/2011Scape/game">
+  <img src="https://i.imgur.com/IKFkP0S.jpeg" alt="2011Scape">
+</a>
 
-<img src="https://github.com/2011Scape/game/assets/75695035/db690407-bc57-437a-aa86-f692f9983bbe" alt="2011scape Banner Screenshot Image - Player woodcutting maple trees." /></p>
+</div>
 
 
-[![license][license-badge]][isc] [![discord-badge]][discord]
+[![Version](https://img.shields.io/github/v/tag/2011Scape/2011scape-client?style=for-the-badge&logo=git&logoColor=white&color=orange)](https://github.com/2011Scape/2011scape-client/releases)
+[![License](https://img.shields.io/badge/license-ISC-blue?style=for-the-badge&logo=open-source-initiative&logoColor=white)](https://opensource.org/licenses/ISC)
+[![Discord](https://img.shields.io/discord/1055304546521469019?label=chat&logo=discord&logoColor=white&style=for-the-badge&color=5865F2)](https://discord.gg/jDbBAKjhxh)
+[![Contributors](https://img.shields.io/github/contributors/MrSlayerGod/2011scape-client?style=for-the-badge&logo=github&color=brightgreen)](https://github.com/2011Scape/2011scape-client/graphs/contributors)
 
-# 2011Scape Client
+## 2011Scape Client
 
 Client build [667][build] of [RuneScape 2][rs2], originally released on [2011-10-04][update], modified for 2011Scape.
 
