@@ -69,7 +69,7 @@ jobs:
     # Step 9: Update Bootstrap JSON
     - name: Update Bootstrap JSON
       run: |
-        curl -o bootstrap.json https://2011scape.com/downloads/bootstrap.json
+        curl -o bootstrap.json https://2011.rs/downloads/bootstrap.json
         jq '.artifacts[0].hash = env.hash |
             .artifacts[0].size = (env.size | tonumber) |
             .artifacts[0].path = "https://github.com/2011Scape/2011scape-client/releases/download/v${{ github.run_number }}/2011Scape-Client.jar"' bootstrap.json > bootstrap_updated.json
